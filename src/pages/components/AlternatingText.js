@@ -9,7 +9,7 @@ const AlternatingText = ({ content }) => {
     console.log(link)
     return <div className='px-5 pt-2'>
       <a href={link}>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
           {text}
         </button>
       </a>

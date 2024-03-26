@@ -11,7 +11,7 @@ const Sustainability = () => {
           buttons: [
             {
               text: "Our Certification",
-              link: process.env.PUBLIC_URL + "/LNT_cert.pdf"
+              link: process.env.PUBLIC_URL + "/LNT_cert.jpeg"
             },
             {
               text: "Our Eco Policy",
