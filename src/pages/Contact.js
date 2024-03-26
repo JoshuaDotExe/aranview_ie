@@ -10,11 +10,11 @@ const Contact = () => {
             <div class="space-y-8">
               <div className='flex flex-row justify-center'>
                 <div class="block mb-2 text-m font-medium text-gray-700"><b>Our Email : </b></div>
-                <div class="block pl-5 mb-2 text-m font-medium text-gray-700">testemailaddress@test.test</div>
+                <div class="block pl-5 mb-2 text-m font-medium text-gray-700">aranviewweb@gmail.com</div>
               </div>
               <div className='flex flex-row justify-center'>
-                <div class="block mb-2 text-m font-medium text-gray-700"><b>Another Email : </b></div>
-                <div class="block pl-5 mb-2 text-m font-medium text-gray-700">testemailaddress@test.test</div>
+                <div class="block mb-2 text-m font-medium text-gray-700"><b>Phone number : </b></div>
+                <div class="block pl-5 mb-2 text-m font-medium text-gray-700">(065) 707 4850</div>
               </div>
             </div>
         </div>

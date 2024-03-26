@@ -11,11 +11,11 @@ const Sustainability = () => {
           buttons: [
             {
               text: "Our Certification",
-              link: process.env.PUBLIC_URL + "/LNT_cert.jpeg"
+              link: "https://drive.google.com/file/d/1K3-4Enm5hpBqm26yfDxzBA5r25uE0oe0/view?usp=sharing"
             },
             {
               text: "Our Eco Policy",
-              link: process.env.PUBLIC_URL + "/env_policy.pdf"
+              link: "https://drive.google.com/file/d/15EjObicEbNQgbsN7Cz3djPGARuCipzKG/view?usp=sharing"
             },
             {
               text: "Leave No Trace Ireland",
