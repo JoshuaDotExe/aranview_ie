@@ -19,7 +19,7 @@ const About = () => {
   ];
 
   return (
-    <div className='grid p-4 text-center h-full content-center'>
+    <div className='absolute p-4 text-center transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2'>
       <AlternatingText content={content}></AlternatingText>
     </div>
   )
