@@ -11,7 +11,8 @@ const Geopark = () => {
           buttons: [
             {
               text: "About BEN",
-              link: "https://burren.ie/about-us/"
+              link: process.env.PUBLIC_URL + "/B_E_N__Information_for_Web.pdf",
+              download: true
             }
           ]
         },
