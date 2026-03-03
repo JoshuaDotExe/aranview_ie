@@ -2,29 +2,29 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
 
-locals {
-  domain_name = "aranview.ie"
+resource "aws_acm_certificate" "site" {
+  provider                  = aws.us_east_1
+  domain_name               = "aranview.ie"
+  subject_alternative_names = ["www.aranview.ie"]
+  validation_method         = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+output "acm_validation_records" {
+  value       = aws_acm_certificate.site.domain_validation_options
+  description = "Add these CNAME records to your DNS provider to validate the ACM certificate"
 }
 
 resource "aws_s3_bucket" "website_bucket" {
   bucket = "aranview-ie-website-2026"
-}
-
-resource "aws_route53_zone" "primary" {
-  name = local.domain_name
-}
-
-resource "aws_s3_bucket_website_configuration" "website_bucket" {
-  bucket = aws_s3_bucket.website_bucket.id
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "index.html"
-  }
 }
 
 resource "aws_s3_object" "website_files" {
@@ -55,41 +55,50 @@ resource "aws_s3_object" "website_files" {
 }
 
 resource "aws_s3_account_public_access_block" "website_bucket" {
-  block_public_acls   = false
-  block_public_policy = false
+  block_public_acls   = true
+  block_public_policy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "website_bucket" {
   bucket = aws_s3_bucket.website_bucket.id
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_cloudfront_origin_access_control" "site" {
+  name                              = "aranview-s3-oac"
+  description                       = "OAC for Aran View S3 bucket"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 resource "aws_s3_bucket_policy" "website_bucket" {
   bucket = aws_s3_bucket.website_bucket.id
-  
+
   depends_on = [
     aws_s3_account_public_access_block.website_bucket,
     aws_s3_bucket_public_access_block.website_bucket
   ]
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "PublicReadGetObject"
+        Sid    = "AllowCloudFrontOAC"
         Effect = "Allow"
-        Principal = "*"
-        Action = [
-          "s3:GetObject",
-          "s3:ListBucket",
-        ]
-        Resource = [
-          "${aws_s3_bucket.website_bucket.arn}",
-          "${aws_s3_bucket.website_bucket.arn}/*"
-        ]
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.website_bucket.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.site.arn
+          }
+        }
       }
     ]
   })
@@ -100,17 +109,12 @@ resource "aws_cloudfront_distribution" "site" {
   is_ipv6_enabled     = true
   comment             = "Aran View website"
   default_root_object = "index.html"
+  aliases             = ["aranview.ie", "www.aranview.ie"]  # re-enable once CNAME conflict is resolved
 
   origin {
-    domain_name = aws_s3_bucket_website_configuration.website_bucket.website_endpoint
-    origin_id   = "aranview-s3-website"
-
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
+    domain_name              = aws_s3_bucket.website_bucket.bucket_regional_domain_name
+    origin_id                = "aranview-s3-website"
+    origin_access_control_id = aws_cloudfront_origin_access_control.site.id
   }
 
   default_cache_behavior {
@@ -130,6 +134,18 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
+  custom_error_response {
+    error_code         = 403
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+
+  custom_error_response {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+
   price_class = "PriceClass_100"
 
   restrictions {
@@ -140,25 +156,18 @@ resource "aws_cloudfront_distribution" "site" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate.site.arn  # re-enable with aliases
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
-}
-
-output "website_endpoint" {
-  value       = aws_s3_bucket_website_configuration.website_bucket.website_endpoint
-  description = "The S3 website endpoint URL"
-}
-
-output "website_url" {
-  value       = "http://${aws_s3_bucket_website_configuration.website_bucket.website_endpoint}"
-  description = "The full website URL"
 }
 
 output "cloudfront_domain" {
   value       = aws_cloudfront_distribution.site.domain_name
-  description = "CloudFront distribution domain"
+  description = "CloudFront distribution domain — create a CNAME record pointing your domain to this value"
 }
 
-output "route53_name_servers" {
-  value       = aws_route53_zone.primary.name_servers
-  description = "Route 53 name servers for aranview.ie"
+output "cloudfront_distribution_id" {
+  value       = aws_cloudfront_distribution.site.id
+  description = "CloudFront distribution ID (useful for cache invalidation)"
 }

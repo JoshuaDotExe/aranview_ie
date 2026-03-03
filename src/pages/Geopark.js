@@ -31,6 +31,17 @@ const Geopark = () => {
             }
           ]
         },
+        {
+          title: "Clare's EarthCheck Sustainable Destination",
+          text: "We are recognised as a contributor to Clare's EarthCheck Sustainable Destination certification — an internationally respected standard for sustainable tourism. It reflects our ongoing effort to operate responsibly and support the wider Burren and Cliffs of Moher Geopark community.",
+          image: process.env.PUBLIC_URL + "/EarthCheck Recognised Contributor.png",
+          buttons: [
+            {
+              text: "More",
+              link: "https://visitclare.ie/earthcheck/"
+            }
+          ]
+        },
       ];
 
   return (
