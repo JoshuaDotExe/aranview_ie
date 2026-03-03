@@ -6,7 +6,7 @@ const Geopark = () => {
     const content = [
         {
           title: "Burren Ecotourism Network",
-          text: "We are proud members of the Burren Ecotourism Network, committed to the promotion of responsible tourism that conserves the environment and improves the well-being of local people. Formally established in 2011, the Burren Ecotourism Network (the B.E.N.) is a local membership organisation embedded in a sustainable tourism ethos.",
+          text: "We are proud members of the Burren Ecotourism Network, committed to the promotion of responsible tourism that conserves the environment and improves the well-being of local people. Formally established in 2011, the Burren Ecotourism Network ( B.E.N.) is a local membership organisation embedded in a sustainable tourism ethos.",
           image: process.env.PUBLIC_URL + "/BEN_Logo.jpg",
           buttons: [
             {
@@ -19,7 +19,7 @@ const Geopark = () => {
         {
           title: "Ecotourism & our UNESCO Geopark",
           text: "We work together with BEN and our local community to to promote ‘The Burren & Cliffs of Moher UNESCO Global Geopark’ as a leading sustainable visitor destination, celebrated for high standards in visitor experience, conservation & learning.",
-          image: process.env.PUBLIC_URL + "/Geopark_Logo.jpg",
+          image: process.env.PUBLIC_URL + "/new_geopark.png",
           buttons: [
             {
               text: "Burren Geopark",
@@ -32,8 +32,19 @@ const Geopark = () => {
           ]
         },
         {
-          title: "Clare's EarthCheck Sustainable Destination",
-          text: "We are recognised as a contributor to Clare's EarthCheck Sustainable Destination certification — an internationally respected standard for sustainable tourism. It reflects our ongoing effort to operate responsibly and support the wider Burren and Cliffs of Moher Geopark community.",
+          title: "Visit Clare",
+          text: "Visit Clare is the official tourism platform for County Clare, showcasing the best of what the region has to offer. From the Burren and Cliffs of Moher to local food, culture, and accommodation. We are proud to be part of the Clare tourism community.",
+          image: process.env.PUBLIC_URL + "/visit-clare-logo-small.jpg",
+          buttons: [
+            {
+              text: "More",
+              link: "https://visitclare.ie/"
+            }
+          ]
+        },
+        {
+          title: "Visit Clare's EarthCheck",
+          text: "We are recognised as a contributor to Clare's EarthCheck Sustainable Destination certification. An internationally respected standard for sustainable tourism. It reflects our ongoing effort to operate responsibly and support the wider Burren and Cliffs of Moher Geopark community.",
           image: process.env.PUBLIC_URL + "/EarthCheck Recognised Contributor.png",
           buttons: [
             {
@@ -41,7 +52,7 @@ const Geopark = () => {
               link: "https://visitclare.ie/earthcheck/"
             }
           ]
-        },
+        }
       ];
 
   return (

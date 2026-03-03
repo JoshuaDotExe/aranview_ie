@@ -109,7 +109,7 @@ resource "aws_cloudfront_distribution" "site" {
   is_ipv6_enabled     = true
   comment             = "Aran View website"
   default_root_object = "index.html"
-  aliases             = ["aranview.ie", "www.aranview.ie"]  # re-enable once CNAME conflict is resolved
+  # aliases             = ["aranview.ie", "www.aranview.ie"]  # re-enable once CNAME conflict is resolved
 
   origin {
     domain_name              = aws_s3_bucket.website_bucket.bucket_regional_domain_name
