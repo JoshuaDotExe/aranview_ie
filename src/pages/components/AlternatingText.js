@@ -28,7 +28,7 @@ const AlternatingText = ({ content }) => {
 
   const mobileBlock = (item) => (
     <div className='flex flex-col items-center text-center gap-3'>
-      <img className='max-w-[170px] md:max-w-[200px]' src={item.image} alt={item.title} />
+      <img className='max-w-[170px] md:max-w-[200px]' src={item.image} alt={item.title} loading='lazy' />
       <b className='text-lg'>{item.title}</b>
       <p className='text-sm md:text-base'>{item.text}</p>
       <div className='flex flex-row flex-wrap justify-center'>
@@ -59,6 +59,7 @@ const AlternatingText = ({ content }) => {
               className='self-center max-w-[160px] md:max-w-[220px] md:mx-6'
               src={item.image}
               alt={item.title}
+              loading='lazy'
             />
             {i % 2 !== 0 && titleAndPara(item)}
           </div>

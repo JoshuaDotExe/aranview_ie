@@ -1,14 +1,32 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const About = () => {
+  const bgRef = useRef(null);
+  const [bgLoaded, setBgLoaded] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setBgLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    if (bgRef.current) observer.observe(bgRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className='w-full min-h-full relative'>
 
-      {/* Blurred background image */}
+      {/* Blurred background image — lazily loaded via IntersectionObserver */}
       <div
+        ref={bgRef}
         className='absolute inset-0 pointer-events-none'
         style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL}/GarrihysEdited-09.jpg)`,
+          backgroundImage: bgLoaded ? `url(${process.env.PUBLIC_URL}/GarrihysEdited-09.jpg)` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

@@ -5,6 +5,13 @@ const Home = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    const art = "ICAgICAvXCAgL1wgICAgICAgICAgICAgICAgICAgICAgIHw6LiAgICAgJXw6LiAgICAgICAgICAgICAgIHwKICAgICAgICAvIDtcfiJgLiAgICAgICAsLS0tLS0tLS0uICAgICB8Oi4gICAgICV8Oi4gICAgICAgICAgICAgICB8CiAgICAoIC8gICkgLyBcICAgICAgfCAqVUxQKiAgfCAgICAgfDouICAgICAlfDouICAgICAgICAgICAgICAgfAogICAgL34vICAgICAvI1wgYC4gICAgICJ+flwvfn5+IiAgICAgfDouICAgICAlfDouICAgICAgICAgICAgICAgfAogICAgL19ffCAgICAgIn4iIC9+XC9+XSAgICAgICAgICAgICAgIHw6LiAgICAgJXw6LiAgICAgICAgICAgICAgIHwKICAgIGAvfn5gXCAgICAgICBcQCAgQCAgICAgICAgICAgICAgICB8Oi4gICAgICV8Oi4gICAgICAgICAgICAgICB8CiAgICAvX19fX19cICAgIDstLixfLC8gICAgICAgICAgICAgICAgfDouICAgICAlfDouICAgICAgICAgICAgICAgfAogICAgYCAvfn5+fnwgICAtLl9fXy8gICAgICAgICAgICAgICAgIHw6LiAgICAgJXw6LiAgICAgICAgICAgICAgIHwKICAgIC9fX19fLi0tLiAgIFwtLiAgICAgICAgICAgICAgICAgLzouICAgICAlLzouICAgICAgICAgICAgICAgICIKICAgIGAvfn5+fCAgIFwgICBcfCAgICAgICAgLl9fX18ufn46Ll9fX18ufn46LiAgICAgICAgICAgICAgICAgIFwKICAgIC9fX19ffCAgICAgICAgXCAgICAgIC8iOi4gICAlJS8iOi4gICAgICAgICAgICAgICAgICAgICAgICAgICBcCiAgICBgICAsLCEgICAgLyAgICBcICAgIC86LiAvOi4gJS86LiAvOi4gICAgICAgICAgICAgICAgICAgICAgICAgIFwKICAgICAgICBcO1wgICAvfiAgICAgJyAgIHw6LiB8Oi4gJXw6LiB8Oi4gICAgICAgICAgICAgICAgICAgICAgICAgICB8CiAgICAgICAgLyB+ICAvICAgICAgICAnICB8Oi4gfDouICV8Oi4gfDouICAgICAgICAgICAgICAgICAgICAgICAgICAvCiAgICAgICAgXF9fXy8gICAgICAgIEAgfSBgfn5+Xn5+fi1efn5+Xn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4KCiAgICAgICAgXCAgICAgICAgICAsICAgIFNoZWxpYSAoYWthICJNZWxvZHkiKQ==";
+    const comment = document.createComment(atob(art));
+    containerRef.current?.parentNode?.insertBefore(comment, containerRef.current);
+    return () => comment.parentNode?.removeChild(comment);
+  }, []);
+
+  useEffect(() => {
     // The scrollable element is the <main> parent, not window
     const scrollParent = containerRef.current?.closest('main');
     if (!scrollParent) return;
@@ -22,12 +29,12 @@ const Home = () => {
 
   // Operating hours data structure
   const operatingHours = {
-    'mon': { open: '7:00 AM', close: '8:00 PM' },
-    'tue': { open: '7:00 AM', close: '8:00 PM' },
-    'wed': { open: '7:00 AM', close: '8:00 PM' },
-    'thu': { open: '7:00 AM', close: '8:00 PM' },
-    'fri': { open: '7:00 AM', close: '8:00 PM' },
-    'sat': { open: '7:00 AM', close: '8:00 PM' },
+    'mon': { open: '7:00 AM', close: '7:00 PM' },
+    'tue': { open: '7:00 AM', close: '7:00 PM' },
+    'wed': { open: '7:00 AM', close: '7:00 PM' },
+    'thu': { open: '7:00 AM', close: '7:00 PM' },
+    'fri': { open: '7:00 AM', close: '7:00 PM' },
+    'sat': { open: '7:00 AM', close: '7:00 PM' },
     'sun': { open: '8:00 AM', close: '6:00 PM' }
   };
 
@@ -72,6 +79,26 @@ const Home = () => {
   };
 
   return (
+    <>
+      {/*
+               __/>^^^;:,
+  __  __      /-.       :,/|/|
+ /  \/  \  __/ ^         :,/ \__
+|        |(~             ;/ /  /
+\       {  `-'--._       / / ,<  ___
+ \      /,__.   /=\     /  _/  >|_'.
+  \    /  `_ `--------'    __ / ',\ \
+   \  / ,_// ,---_____,   ,_  \_  ,| |
+    \/   `--' |=|           \._/ ,/  |
+               \=\            `,,/   |
+                \=\            ||    /
+                 \=\____       |\    \
+                / \/    `     <__)    \
+                | |                    |
+              ,__\,\                   /
+             ,--____>    /\.         ./
+             '-__________>  \.______/
+      */}
       <div ref={containerRef} className='flex flex-col align-middle text-center w-full justify-center'>
         {/* Hero image that fades on scroll */}
         <div className='relative w-full -mt-4 -mx-4' style={{ width: 'calc(100% + 2rem)' }}>
@@ -93,7 +120,8 @@ const Home = () => {
           {generateOperatingHoursElement(operatingHours)}
         </div>
       </div>
-    );
+    </>
+  );
 }
 
 export default Home;
